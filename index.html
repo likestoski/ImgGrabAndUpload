@@ -3,14 +3,14 @@
   <head>
     <title>Capture Photo</title>
 
-   <script src="phonegap.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" charset="utf-8">
+   <script src='phonegap.js' type='text/javascript' charset='utf-8'></script>
+    <script type='text/javascript' charset='utf-8'>
       var pictureSource;   // picture source
       var destinationType; // sets the format of returned value 
 
     // Wait for PhoneGap to connect with the device
     //
-    document.addEventListener("deviceready",onDeviceReady,false);
+    document.addEventListener('deviceready',onDeviceReady,false);
     function onDeviceReady() {
         pictureSource=navigator.camera.PictureSourceType;
         destinationType=navigator.camera.DestinationType;      
@@ -29,45 +29,48 @@
 
     function onPhotoURISuccess(imageURI) {
       var msg = document.getElementById('msg');
-      msg.innerText = "got the image URI: "+ imageURI +" attempting to upload ...";
+      msg.innerText = 'got the image URI: '+ imageURI +' attempting to upload ...';
       try{
         var options = new FileUploadOptions();
-        options.fileKey="file";
+        options.fileKey='file';
         options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-        options.mimeType="image/jpeg";
+        options.mimeType='image/jpeg';
 
         var params = new Object();
-        params.value1 = "test";
-        params.value2 = "param";
+        params.value1 = 'test';
+        params.value2 = 'param';
 
         options.params = params;
 
         var ft = new FileTransfer();
-        ft.upload(imageURI, "http://192.168.1.81:49343/File/FileUpload", win, fail, options);
-        alert('upload complete');
+        ft.upload(imageURI, 'http://192.168.1.81:49343/File/FileUpload', win, fail, options);
+        msg.innerText = 'upload complete';
       } catch(err){
-        alert('error fromcatch: '+ err);
+        var msg = document.getElementById('msg');
+        msg.innerText = 'error from catch: '+ err;
       }
     }
 
     function onFail(message) {
-      alert('Failed because: ' + message);
+      var msg = document.getElementById('msg');
+        msg.innerText = 'Failed because: ' + message;
     }
 
 
     function win(r) {
         var msg = document.getElementById('msg');
-        msg.innerText = "Code = " + r.responseCode +" Response = " + r.response +" Sent = " + r.bytesSent;
+        msg.innerText = 'Code = ' + r.responseCode +' Response = ' + r.response +' Sent = ' + r.bytesSent;
     }
 
     function fail(error) {
-        alert("An error has occurred: Code = " = error.code);
+        var msg = document.getElementById('msg');
+        msg.innerText = 'An error has occurred: Code = ' = error.code;
     }
 		
     </script>
   </head>
   <body>
-    <button onclick="capturePhoto();">Capture Photo</button> <br>
-    <div id="msg">Waiting for capture</div>
+    <button onclick='capturePhoto();'>Capture Photo</button> <br>
+    <div id='msg'>Waiting for capture</div>
   </body>
 </html>
