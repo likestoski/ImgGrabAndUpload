@@ -30,7 +30,11 @@
     function onPhotoURISuccess(imageURI) {
       var msg = document.getElementById('msg');
       msg.innerText = "got the image URI: "+ imageURI +" attempting to upload ...";
-      uploadPhoto(imageURI);
+      try{
+        uploadPhoto(imageURI);
+      } catch(err){
+        alert(err);
+      }
 
     }
 
