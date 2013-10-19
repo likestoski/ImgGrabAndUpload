@@ -40,7 +40,7 @@
             options.chunkedMode = false;
  
             var ft = new FileTransfer();
-            ft.upload(imageURI, "http://192.168.1.81/celebpoker/file/uploadfile", win, fail, options);
+            ft.upload(imageURI, "http://celebritypoker.elasticbeanstalk.com/file/uploadfile", win, fail, options);
         }
  
         function win(r) {
@@ -59,7 +59,7 @@
 <body>
     <button onclick="getImage();">Upload a Photo</button>
 
-  <form method="post" enctype="multipart/form-data" action="http://192.168.1.81/celebpoker/file/uploadfile">
+  <form method="post" enctype="multipart/form-data" action="http://celebritypoker.elasticbeanstalk.com/file/uploadfile">
         
     <input type="file" value="Upload" id="fileUpload" name="fileUpload" />
     <input type="submit" value="Submit" />
