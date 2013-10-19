@@ -1,76 +1,62 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-  <head>
-    <title>Capture Photo</title>
-
-   <script src='phonegap.js' type='text/javascript' charset='utf-8'></script>
-    <script type='text/javascript' charset='utf-8'>
-      var pictureSource;   // picture source
-      var destinationType; // sets the format of returned value 
-
-    // Wait for PhoneGap to connect with the device
-    //
-    document.addEventListener('deviceready',onDeviceReady,false);
-    function onDeviceReady() {
-        pictureSource=navigator.camera.PictureSourceType;
-        destinationType=navigator.camera.DestinationType;      
+<head>
+    <title>File Transfer Example</title>
+    <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
+    <script type="text/javascript" charset="utf-8">
+ 
+        // Wait for PhoneGap to load
+        document.addEventListener("deviceready", onDeviceReady, false);
+ 
+        // PhoneGap is ready
+        function onDeviceReady() {
+    // Do cool things here...
+        }
+ 
+        function getImage() {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(uploadPhoto, function(message) {
+      alert('get picture failed');
+    },{
+      quality: 50, 
+      destinationType: navigator.camera.DestinationType.FILE_URI,
+      sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
     }
-	
-    function capturePhoto() {
-  	  try
-  	  {
-          navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50, 
-            destinationType: destinationType.FILE_URI});
-
-  	  } catch(exc){
-    		alert(exc.message);
-  	  }
-    }
-
-    function onPhotoURISuccess(imageURI) {
-      var msg = document.getElementById('msg');
-      msg.innerText = 'got the image URI: '+ imageURI +' attempting to upload ...';
-      try{
-        var options = new FileUploadOptions();
-        options.fileKey='file';
-        options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-        options.mimeType='image/jpeg';
-
-        var params = new Object();
-        params.value1 = 'test';
-        params.value2 = 'param';
-
-        options.params = params;
-
-        var ft = new FileTransfer();
-        ft.upload(imageURI, 'http://192.168.1.81/celebpoker/File/FileUpload', win, fail, options);
-        msg.innerText = 'upload complete';
-      } catch(err){
-        var msg = document.getElementById('msg');
-        msg.innerText = 'error from catch: '+ err;
-      }
-    }
-
-    function onFail(message) {
-      var msg = document.getElementById('msg');
-        msg.innerText = 'Failed because: ' + message;
-    }
-
-
-    function win(r) {
-        var msg = document.getElementById('msg');
-        msg.innerText = 'Code = ' + r.responseCode +' Response = ' + r.response +' Sent = ' + r.bytesSent;
-    }
-
-    function fail(error) {
-        var msg = document.getElementById('msg');
-        msg.innerText = 'An error has occurred: Code = ' = error.code;
-    }
-		
-    </script>
-  </head>
-  <body>
-    <button onclick='capturePhoto();'>Capture Photo</button> <br>
-    <div id='msg'>Waiting for capture</div>
-  </body>
+            );
+ 
+        }
+ 
+        function uploadPhoto(imageURI) {
+            var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+ 
+            var params = new Object();
+            params.value1 = "test";
+            params.value2 = "param";
+ 
+            options.params = params;
+            options.chunkedMode = false;
+ 
+            var ft = new FileTransfer();
+            ft.upload(imageURI, "http://192.168.1.81:49343/file/uploadfile", win, fail, options);
+        }
+ 
+        function win(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+            alert('success '+ r.response);
+        }
+ 
+        function fail(error) {
+            alert("An error has occurred: Code = " = error.code);
+        }
+ 
+        </script>
+</head>
+<body>
+    <button onclick="getImage();">Upload a Photo</button>
+</body>
 </html>
